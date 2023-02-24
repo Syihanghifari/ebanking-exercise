@@ -42,7 +42,7 @@ public class TransferRequest implements Serializable{
 	@Override
 	public String toString() {
 		return accountFrom + "," + accountTo + "," + amount
-				+ "," + notes;
+				+ "," + notes + ",";
 	}
 	
 

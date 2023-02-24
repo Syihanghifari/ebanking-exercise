@@ -205,9 +205,11 @@ public class EbankingServiceImpl implements EbankingService {
 			sender = session.createProducer(destination);
 
 			((javax.jms.Connection) connection).start();
-
+			
+			Date date =new Date();
+			String dates = date.toString();
 			TextMessage textMessage = session.createTextMessage();
-			String data = transferRequest.toString();
+			String data = transferRequest.toString() + dates;
 			textMessage.setText(data);
 
 			sender.send(textMessage);
