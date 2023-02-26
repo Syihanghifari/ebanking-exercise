@@ -14,14 +14,16 @@ import javax.jms.TextMessage;
 }, mappedName="jms.NotificationListener")
 public class NotificationListener implements MessageListener{
 	public void onMessage(Message message) {
-		System.out.println("instance 1 : ");
-		
 		try{
 			String messageInString = "";
 			if (message instanceof TextMessage) {
 				messageInString = ((TextMessage) message).getText();
 			}
-			System.out.println("Incoming message (Instance 1) :" + messageInString);
+			String[] datas = messageInString.split(",", 8);
+			for (String data : datas) {
+				
+				System.out.print(" <" + data + ">");
+			}
 		}catch(JMSException j) {
 			System.err.print("Error :" + j.getMessage());
 		}
