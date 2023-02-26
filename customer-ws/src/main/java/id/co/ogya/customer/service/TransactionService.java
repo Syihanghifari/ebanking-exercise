@@ -19,26 +19,30 @@ public class TransactionService {
 	
 	@WebMethod
 	public InquiryBalanceResponse cekSaldo(InquiryBalanceRequest inquiryBalanceRequest) throws InvalidInputException {
-		InquiryBalanceResponse response = new InquiryBalanceResponse();
-		if(inquiryBalanceRequest.getAccountNo().equals(null)) {
-			throw new InvalidInputException("Field <account no> harus diisi", " OGYA-999");
-		}else {
-			String simpleDataSourceAccessJNDIName =
-					"EbankingServiceImpl#id.co.ogya.ebanking.ejb.EbankingService";
-			try {
-				
-				
-				ServiceFactory serviceFactory = new ServiceFactory();
-				EbankingService ebankingService = (EbankingService) serviceFactory.getService(simpleDataSourceAccessJNDIName);
-				boolean isAbleToConnect = ebankingService.isConnected();
-				System.out.println("is Able to connect " + isAbleToConnect);
-				response = ebankingService.cekSaldo(inquiryBalanceRequest);
-				
-			}catch(Exception e) {
-				throw new InvalidInputException("error dari backend", " OGYA-999");
+		try {
+			InquiryBalanceResponse response = new InquiryBalanceResponse();
+			if(inquiryBalanceRequest.getAccountNo() <= 0) {
+				throw new InvalidInputException("Field <account no> harus diisi", " OGYA-999");
+			}else {
+				String simpleDataSourceAccessJNDIName =
+						"EbankingServiceImpl#id.co.ogya.ebanking.ejb.EbankingService";
+				try {
+					
+					
+					ServiceFactory serviceFactory = new ServiceFactory();
+					EbankingService ebankingService = (EbankingService) serviceFactory.getService(simpleDataSourceAccessJNDIName);
+					boolean isAbleToConnect = ebankingService.isConnected();
+					System.out.println("is Able to connect " + isAbleToConnect);
+					response = ebankingService.cekSaldo(inquiryBalanceRequest);
+					
+				}catch(Exception e) {
+					throw new InvalidInputException("error dari backend", " OGYA-999");
+				}
 			}
+			return response;
+		}catch(Exception e) {
+			throw new InvalidInputException("error dari backend", " OGYA-999");
 		}
-		return response;
 	}
 	
 	@WebMethod
