@@ -73,13 +73,9 @@ public class EbankingServiceImpl implements EbankingService {
 		}
 		return response;
 	}
-	
-	
 	public TransferResponse kirim(TransferRequest transferRequest) {
 		TransferResponse response = new TransferResponse();
-		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
 		try {
-			Connection conn = dataSourceServiceFactory.getConnection();
 			if (validateNo(transferRequest.getAccountFrom())) {
 				response.setErrorMessage("no pengirim tidak ditemukan");
 			}else if(validateNo(transferRequest.getAccountTo())){
@@ -88,21 +84,11 @@ public class EbankingServiceImpl implements EbankingService {
 				if (validateSaldo(transferRequest.getAccountFrom()) < transferRequest.getAmount()) {
 					response.setErrorMessage("saldo anda tidak cukup");
 				}else {
-					System.out.println("kelar validasi");
+					//System.out.println("kelar validasi");
 					String reference = UUID.randomUUID().toString().replace("-", "");
 					updateSaldoPengirim(transferRequest.getAmount(),transferRequest.getAccountFrom());
 					updateSaldoPenerima(transferRequest.getAmount(),transferRequest.getAccountTo());
-					String sqlSelectQuery = "INSERT INTO TBL_TRANSFER_LOG values(?,?,?,?,SYSDATE,?)";
-					PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
-					preparedStatement.setString(1, reference);
-					preparedStatement.setLong(2,transferRequest.getAccountFrom());
-					preparedStatement.setLong(3,transferRequest.getAccountTo());
-					preparedStatement.setLong(4,transferRequest.getAmount());
-					
-					preparedStatement.setString(5, transferRequest.getNotes());
-					preparedStatement.executeQuery();
-					preparedStatement.close();
-					dataSourceServiceFactory.closeConnection();
+					executeQuery(transferRequest,reference);
 					sendMessage(transferRequest);
 					response.setErrorMessage("Transfer Berhasil");
 					response.setReferenceNumber(reference);
@@ -113,7 +99,24 @@ public class EbankingServiceImpl implements EbankingService {
 		}
 		return response;
 	}
-	
+	private void executeQuery(TransferRequest transferRequest, String reference) {
+		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
+		try {
+			Connection conn = dataSourceServiceFactory.getConnection();
+			String sqlSelectQuery = "INSERT INTO TBL_TRANSFER_LOG values(?,?,?,?,SYSDATE,?)";
+			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
+			preparedStatement.setString(1, reference);
+			preparedStatement.setLong(2,transferRequest.getAccountFrom());
+			preparedStatement.setLong(3,transferRequest.getAccountTo());
+			preparedStatement.setLong(4,transferRequest.getAmount());
+			preparedStatement.setString(5, transferRequest.getNotes());
+			preparedStatement.executeQuery();
+			preparedStatement.close();
+			dataSourceServiceFactory.closeConnection();
+		}catch(Exception e) {
+			System.err.println("Exception : " + e.getMessage());
+		}
+	}
 	private boolean validateNo(Long no) {
 		boolean valid = true;
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
@@ -122,7 +125,6 @@ public class EbankingServiceImpl implements EbankingService {
 			String sqlSelectQuery = "SELECT * FROM TBL_NASABAH WHERE ACCOUNT_NO = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
 			preparedStatement.setLong(1, no);
-			System.out.println("lagi divalidasi");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()){
 				valid = false;
@@ -142,7 +144,6 @@ public class EbankingServiceImpl implements EbankingService {
 			String sqlSelectQuery = "SELECT ACCOUNT_BALANCED FROM TBL_NASABAH WHERE ACCOUNT_NO = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
 			preparedStatement.setLong(1, no);
-			System.out.println("lagi divalidasi saldo");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				saldo = resultSet.getLong("ACCOUNT_BALANCED");
@@ -163,7 +164,6 @@ public class EbankingServiceImpl implements EbankingService {
 			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
 			preparedStatement.setLong(1, jumlah);
 			preparedStatement.setLong(2, no);
-			System.out.println("lagi diupdate saldo pengirim");
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
@@ -179,7 +179,6 @@ public class EbankingServiceImpl implements EbankingService {
 			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
 			preparedStatement.setLong(1, jumlah);
 			preparedStatement.setLong(2, no);
-			System.out.println("lagi diupdate saldo penerima");
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
@@ -213,8 +212,6 @@ public class EbankingServiceImpl implements EbankingService {
 			textMessage.setText(data);
 
 			sender.send(textMessage);
-
-			System.out.println("Message sent");
 
 			connection.close();
 
