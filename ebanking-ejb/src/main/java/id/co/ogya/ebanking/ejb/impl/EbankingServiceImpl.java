@@ -44,7 +44,6 @@ public class EbankingServiceImpl implements EbankingService {
 		}
 		return isAbleToConnect;
 	}
-	
 	public InquiryBalanceResponse cekSaldo(InquiryBalanceRequest inquiryBalanceRequest) {
 		InquiryBalanceResponse response = new InquiryBalanceResponse();
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
@@ -155,7 +154,6 @@ public class EbankingServiceImpl implements EbankingService {
 		}
 		return saldo;
 	}
-	
 	private void updateSaldoPengirim(Long jumlah,Long no) {
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
 		try {
@@ -186,7 +184,6 @@ public class EbankingServiceImpl implements EbankingService {
 			System.err.println("Exception : " + e.getMessage());
 		}
 	}
-	
 	private void sendMessage(TransferRequest transferRequest) throws SQLException {
 		javax.jms.Connection connection = null;
 		Session session = null;
@@ -237,9 +234,4 @@ public class EbankingServiceImpl implements EbankingService {
 			}
 		}
 	}
-	
-	
-	
-	
-	
 }
