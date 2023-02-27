@@ -26,7 +26,7 @@ import id.co.ogya.ebanking.ejb.util.ServiceFactory;
 
 @Stateless(mappedName = "EbankingServiceImpl", name = "EbankingServiceImpl")
 public class EbankingServiceImpl implements EbankingService {
-	
+
 	public boolean isConnected() {
 		boolean isAbleToConnect = false;
 
@@ -44,6 +44,7 @@ public class EbankingServiceImpl implements EbankingService {
 		}
 		return isAbleToConnect;
 	}
+
 	public InquiryBalanceResponse cekSaldo(InquiryBalanceRequest inquiryBalanceRequest) {
 		InquiryBalanceResponse response = new InquiryBalanceResponse();
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
@@ -56,48 +57,50 @@ public class EbankingServiceImpl implements EbankingService {
 			while (resultSet.next()) {
 				response.setAccountBalance(resultSet.getLong("ACCOUNT_BALANCED"));
 			}
-			if(response.getAccountBalance().equals(null)) {
+			if (response.getAccountBalance().equals(null)) {
 				response.setErrorCode(null);
 				response.setErrorMessage("No rekening tidak ditemukan");
-			}else {
+			} else {
 				response.setErrorCode(null);
 				response.setErrorMessage(null);
 			}
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			response.setErrorCode(null);
 			response.setErrorMessage("No rekening tidak ditemukan");
 			return response;
 		}
 		return response;
 	}
+
 	public TransferResponse kirim(TransferRequest transferRequest) {
 		TransferResponse response = new TransferResponse();
 		try {
 			if (validateNo(transferRequest.getAccountFrom())) {
 				response.setErrorMessage("no pengirim tidak ditemukan");
-			}else if(validateNo(transferRequest.getAccountTo())){
+			} else if (validateNo(transferRequest.getAccountTo())) {
 				response.setErrorMessage("no penerima tidak ditemukan");
-			}else {
+			} else {
 				if (validateSaldo(transferRequest.getAccountFrom()) < transferRequest.getAmount()) {
 					response.setErrorMessage("saldo anda tidak cukup");
-				}else {
-					//System.out.println("kelar validasi");
+				} else {
+					// System.out.println("kelar validasi");
 					String reference = UUID.randomUUID().toString().replace("-", "");
-					updateSaldoPengirim(transferRequest.getAmount(),transferRequest.getAccountFrom());
-					updateSaldoPenerima(transferRequest.getAmount(),transferRequest.getAccountTo());
-					executeQuery(transferRequest,reference);
+					updateSaldoPengirim(transferRequest.getAmount(), transferRequest.getAccountFrom());
+					updateSaldoPenerima(transferRequest.getAmount(), transferRequest.getAccountTo());
+					executeQuery(transferRequest, reference);
 					sendMessage(transferRequest);
 					response.setErrorMessage("Transfer Berhasil");
 					response.setReferenceNumber(reference);
 				}
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception : " + e.getMessage());
 		}
 		return response;
 	}
+
 	private void executeQuery(TransferRequest transferRequest, String reference) {
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
 		try {
@@ -105,17 +108,18 @@ public class EbankingServiceImpl implements EbankingService {
 			String sqlSelectQuery = "INSERT INTO TBL_TRANSFER_LOG values(?,?,?,?,SYSDATE,?)";
 			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
 			preparedStatement.setString(1, reference);
-			preparedStatement.setLong(2,transferRequest.getAccountFrom());
-			preparedStatement.setLong(3,transferRequest.getAccountTo());
-			preparedStatement.setLong(4,transferRequest.getAmount());
+			preparedStatement.setLong(2, transferRequest.getAccountFrom());
+			preparedStatement.setLong(3, transferRequest.getAccountTo());
+			preparedStatement.setLong(4, transferRequest.getAmount());
 			preparedStatement.setString(5, transferRequest.getNotes());
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception : " + e.getMessage());
 		}
 	}
+
 	private boolean validateNo(Long no) {
 		boolean valid = true;
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
@@ -125,16 +129,17 @@ public class EbankingServiceImpl implements EbankingService {
 			PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectQuery);
 			preparedStatement.setLong(1, no);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()){
+			if (resultSet.next()) {
 				valid = false;
 			}
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception : " + e.getMessage());
 		}
 		return valid;
 	}
+
 	private Long validateSaldo(Long no) {
 		Long saldo = null;
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
@@ -149,12 +154,13 @@ public class EbankingServiceImpl implements EbankingService {
 			}
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception : " + e.getMessage());
 		}
 		return saldo;
 	}
-	private void updateSaldoPengirim(Long jumlah,Long no) {
+
+	private void updateSaldoPengirim(Long jumlah, Long no) {
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
 		try {
 			Connection conn = dataSourceServiceFactory.getConnection();
@@ -165,11 +171,12 @@ public class EbankingServiceImpl implements EbankingService {
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception : " + e.getMessage());
 		}
 	}
-	private void updateSaldoPenerima(Long jumlah,Long no) {
+
+	private void updateSaldoPenerima(Long jumlah, Long no) {
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();
 		try {
 			Connection conn = dataSourceServiceFactory.getConnection();
@@ -180,10 +187,11 @@ public class EbankingServiceImpl implements EbankingService {
 			preparedStatement.executeQuery();
 			preparedStatement.close();
 			dataSourceServiceFactory.closeConnection();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception : " + e.getMessage());
 		}
 	}
+
 	private void sendMessage(TransferRequest transferRequest) throws SQLException {
 		javax.jms.Connection connection = null;
 		Session session = null;
@@ -201,8 +209,8 @@ public class EbankingServiceImpl implements EbankingService {
 			sender = session.createProducer(destination);
 
 			((javax.jms.Connection) connection).start();
-			
-			Date date =new Date();
+
+			Date date = new Date();
 			String dates = date.toString();
 			TextMessage textMessage = session.createTextMessage();
 			String data = transferRequest.toString() + dates;
