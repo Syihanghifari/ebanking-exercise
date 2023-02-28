@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/InquiryBalanceRequest.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/InquiryBalanceResponse.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/InvalidInputException.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/TransactionService.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/TransactionServicePortBindingStub.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/TransactionServiceService.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/TransactionServiceServiceLocator.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/TransferRequest.java=UTF-8
+encoding//src/main/java/id/co/ogya/customer/service/TransferResponse.java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/test/java=UTF-8
+encoding//src/test/resources=UTF-8
+encoding/<project>=UTF-8

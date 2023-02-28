@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>id.co.ogya.customer</groupId>
-	<artifactId>customer-ws</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>ebanking-ws</name>
-	<url>http://maven.apache.org</url>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>id.co.ogya.client</groupId>
+  <artifactId>ebanking-client</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>ebanking-client</name>
+  <url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
@@ -25,25 +25,15 @@
 			<version>${jaxws.version}</version>
 			<type>pom</type>
 		</dependency>
+
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>id.co.ogya.ebanking</groupId>
-			<artifactId>ebanking-ejb-client</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>ebanking-ws</finalName>
+		<finalName>ebanking-client</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
