@@ -4,7 +4,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import id.co.ogya.ebanking.ejb.request.TransferRequest;
-
 import id.co.ogya.ebanking.ejb.response.TransferResponse;
 import id.co.ogya.ebanking.ejb.EbankingService;
 import id.co.ogya.ebanking.ejb.util.ServiceFactory;
