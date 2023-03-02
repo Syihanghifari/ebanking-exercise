@@ -86,10 +86,10 @@
 							<wsdlOptions>
 								<wsdlOption>
 									<!-- put the wsdl file in this location -->
-									<wsdl>${project.basedir}/src/main/resources/client.wsdl</wsdl>
+									<wsdl>${project.basedir}/src/main/resources/TransactionService.wsdl</wsdl>
 									<extraargs>
 										<extraarg>-p</extraarg>
-										<extraarg>id.co.ogya.client</extraarg>
+										<extraarg>id.co.ogya.soap</extraarg>
 									</extraargs>
 								</wsdlOption>
 							</wsdlOptions>

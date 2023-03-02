@@ -1,18 +1,16 @@
-package id.co.ogya.client.impl;
+package id.co.ogya.soap.impl;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import id.co.ogya.client.TransferRequest;
-import id.co.ogya.client.TransferResponse;
 import id.co.ogya.ebanking.ejb.EbankingService;
 import id.co.ogya.ebanking.ejb.util.ServiceFactory;
-import id.co.ogya.client.InquiryBalanceResponse;
-import id.co.ogya.client.InquiryBalanceRequest;
-
-
-import id.co.ogya.client.InvalidInputException_Exception;
-import id.co.ogya.client.TransactionService;
+import id.co.ogya.soap.InquiryBalanceRequest;
+import id.co.ogya.soap.InquiryBalanceResponse;
+import id.co.ogya.soap.InvalidInputException_Exception;
+import id.co.ogya.soap.TransactionService;
+import id.co.ogya.soap.TransferRequest;
+import id.co.ogya.soap.TransferResponse;
 
 @WebService(endpointInterface = "id.co.ogya.client.TransactionService")
 public class TransactionServiceImpl implements TransactionService {

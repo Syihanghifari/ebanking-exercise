@@ -1,5 +1,5 @@
 
-package id.co.ogya.client;
+package id.co.ogya.soap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for cekSaldoResponse complex type.
+ * <p>Java class for kirimResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="cekSaldoResponse"&gt;
+ * &lt;complexType name="kirimResponse"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="return" type="{http://service.customer.ogya.co.id/}inquiryBalanceResponse" minOccurs="0"/&gt;
+ *         &lt;element name="return" type="{http://service.customer.ogya.co.id/}transferResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -27,23 +27,23 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "cekSaldoResponse", propOrder = {
+@XmlType(name = "kirimResponse", propOrder = {
     "_return"
 })
-public class CekSaldoResponse {
+public class KirimResponse {
 
     @XmlElement(name = "return")
-    protected InquiryBalanceResponse _return;
+    protected TransferResponse _return;
 
     /**
      * Gets the value of the return property.
      * 
      * @return
      *     possible object is
-     *     {@link InquiryBalanceResponse }
+     *     {@link TransferResponse }
      *     
      */
-    public InquiryBalanceResponse getReturn() {
+    public TransferResponse getReturn() {
         return _return;
     }
 
@@ -52,10 +52,10 @@ public class CekSaldoResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link InquiryBalanceResponse }
+     *     {@link TransferResponse }
      *     
      */
-    public void setReturn(InquiryBalanceResponse value) {
+    public void setReturn(TransferResponse value) {
         this._return = value;
     }
 

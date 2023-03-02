@@ -1,5 +1,5 @@
 
-package id.co.ogya.client;
+package id.co.ogya.soap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

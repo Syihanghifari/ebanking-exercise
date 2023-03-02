@@ -1,5 +1,5 @@
 
-package id.co.ogya.client;
+package id.co.ogya.soap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for cekSaldo complex type.
+ * <p>Java class for kirim complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="cekSaldo"&gt;
+ * &lt;complexType name="kirim"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="arg0" type="{http://service.customer.ogya.co.id/}inquiryBalanceRequest" minOccurs="0"/&gt;
+ *         &lt;element name="arg0" type="{http://service.customer.ogya.co.id/}transferRequest" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -26,22 +26,22 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "cekSaldo", propOrder = {
+@XmlType(name = "kirim", propOrder = {
     "arg0"
 })
-public class CekSaldo {
+public class Kirim {
 
-    protected InquiryBalanceRequest arg0;
+    protected TransferRequest arg0;
 
     /**
      * Gets the value of the arg0 property.
      * 
      * @return
      *     possible object is
-     *     {@link InquiryBalanceRequest }
+     *     {@link TransferRequest }
      *     
      */
-    public InquiryBalanceRequest getArg0() {
+    public TransferRequest getArg0() {
         return arg0;
     }
 
@@ -50,10 +50,10 @@ public class CekSaldo {
      * 
      * @param value
      *     allowed object is
-     *     {@link InquiryBalanceRequest }
+     *     {@link TransferRequest }
      *     
      */
-    public void setArg0(InquiryBalanceRequest value) {
+    public void setArg0(TransferRequest value) {
         this.arg0 = value;
     }
 
