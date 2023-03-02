@@ -12,7 +12,7 @@ import id.co.ogya.soap.TransactionService;
 import id.co.ogya.soap.TransferRequest;
 import id.co.ogya.soap.TransferResponse;
 
-@WebService(endpointInterface = "id.co.ogya.client.TransactionService")
+@WebService(endpointInterface = "id.co.ogya.soap.TransactionService")
 public class TransactionServiceImpl implements TransactionService {
 	
 	@WebMethod
