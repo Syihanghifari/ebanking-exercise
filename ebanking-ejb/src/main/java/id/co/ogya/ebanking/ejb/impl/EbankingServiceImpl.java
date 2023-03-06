@@ -100,6 +100,33 @@ public class EbankingServiceImpl implements EbankingService {
 		}
 		return response;
 	}
+	
+	public TransferResponse transferRtgs(TransferRequest transferRequest) {
+		TransferResponse response = new TransferResponse();
+		try {
+			if (validateNo(transferRequest.getAccountFrom())) {
+				response.setErrorMessage("no pengirim tidak ditemukan");
+			} else if (validateNo(transferRequest.getAccountTo())) {
+				response.setErrorMessage("no penerima tidak ditemukan");
+			} else {
+				if (validateSaldo(transferRequest.getAccountFrom()) < transferRequest.getAmount()) {
+					response.setErrorMessage("saldo anda tidak cukup");
+				} else {
+					// System.out.println("kelar validasi");
+					String reference = UUID.randomUUID().toString().replace("-", "");
+					updateSaldoPengirim(transferRequest.getAmount(), transferRequest.getAccountFrom());
+					updateSaldoPenerima(transferRequest.getAmount(), transferRequest.getAccountTo());
+					executeQuery(transferRequest, reference);
+					sendMessage(transferRequest);
+					response.setErrorMessage("Transfer Berhasil");
+					response.setReferenceNumber(reference);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Exception : " + e.getMessage());
+		}
+		return response;
+	}
 
 	private void executeQuery(TransferRequest transferRequest, String reference) {
 		DataSourceServiceFactory dataSourceServiceFactory = new DataSourceServiceFactory();

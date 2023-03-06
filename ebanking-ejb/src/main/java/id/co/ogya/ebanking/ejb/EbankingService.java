@@ -13,4 +13,5 @@ public interface EbankingService {
 	public boolean isConnected();
 	public InquiryBalanceResponse cekSaldo(InquiryBalanceRequest inquiryBalanceRequest);
 	public TransferResponse kirim(TransferRequest transferRequest);
+	public TransferResponse transferRtgs(TransferRequest transferRequest);
 }
